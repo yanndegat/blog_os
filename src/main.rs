@@ -28,6 +28,9 @@ mod console;
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
+    let mut port = x86_64::instructions::port::Port::<u8>::new(0xf4);
+    unsafe { port.write(0u8) };
+
     loop {}
 }
 
