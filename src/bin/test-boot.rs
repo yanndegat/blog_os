@@ -2,22 +2,18 @@
 #![feature(const_fn)]
 #![no_std] // don't link the Rust standard library
 #![cfg_attr(not(test), no_main)] // disable all Rust-level entry points
-#![cfg_attr(test, allow(dead_code, unused_macros))] // allow unused code in test mode
-
-extern crate spin;
-extern crate volatile;
-
-extern crate x86_64;
 
 #[macro_use]
 extern crate blog_os;
+
+extern crate x86_64;
 
 /// This function is the entry point, since the linker looks for a function
 /// named `_start_` by default.
 #[cfg(not(test))]
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
-    println!("Hello World{}", "!");
+    println!("ok");
 
     let mut port = x86_64::instructions::port::Port::<u8>::new(0xf4);
     unsafe { port.write(0u8) };
@@ -30,10 +26,17 @@ pub extern "C" fn _start() -> ! {
 #[lang = "panic_fmt"]
 #[no_mangle]
 pub extern "C" fn rust_begin_panic(
-    _msg: core::fmt::Arguments,
-    _file: &'static str,
-    _line: u32,
-    _column: u32,
+    msg: core::fmt::Arguments,
+    file: &'static str,
+    line: u32,
+    column: u32,
 ) -> ! {
+    println!("ok");
+
+    println!("panic: {} at {}:{}:{}", msg, file, line, column);
+
+    let mut port = x86_64::instructions::port::Port::<u8>::new(0xf4);
+    unsafe { port.write(0u8) };
+
     loop {}
 }

@@ -3,8 +3,8 @@ pub mod vga_buffer;
 pub mod serial;
 mod uart_16550;
 
-
 /// Like the `print!` macro in the standard library, but prints to the VGA text buffer.
+#[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => {
         $crate::console::vga_buffer::print(format_args!($($arg)*));
@@ -13,6 +13,7 @@ macro_rules! print {
 }
 
 /// Like the `print!` macro in the standard library, but prints to the VGA text buffer.
+#[macro_export]
 macro_rules! println {
     () => (print!("\n"));
     ($fmt:expr) => (print!(concat!($fmt, "\n")));
