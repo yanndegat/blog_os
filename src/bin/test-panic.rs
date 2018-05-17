@@ -13,7 +13,7 @@ extern crate x86_64;
 #[cfg(not(test))]
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
-    println!("ok");
+    panic!("bla");
 
     let mut port = x86_64::instructions::port::Port::<u8>::new(0xf4);
     unsafe { port.write(0u8) };
