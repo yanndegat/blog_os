@@ -131,14 +131,14 @@ Some lints are `allow` by default (such as `missing-docs`), others are `warn` by
 [clippy]: https://github.com/rust-lang-nursery/rust-clippy
 
 ### Including the Standard Library
-Unit tests run on the host machine, so it's possible to use the complete standard library inside them. To link the standard library in test mode, we can add the following to our `main.rs`:
+Unit tests run on the host machine, so it's possible to use the complete standard library inside them. To link the standard library in test mode, we can make the `#![no_std]` attribute at the top of our `main.rs` conditional too:
 
-```rust
-#[cfg(test)]
-extern crate std;
+```diff
+-#![no_std]
++#![cfg_attr(not(test), no_std)]
 ```
 
-Rust knows where to find the `std` crate, so no modification to the `Cargo.toml` is required.
+We use the [`cfg_attr`] attribute to conditionally enable the `no_std` attribute only in non-test mode. Now we can use the standard library in our unit tests.
 
 ## Testing the VGA Module
 Now that we have set up the test framework, we can add a first unit test for our `vga_buffer` module:

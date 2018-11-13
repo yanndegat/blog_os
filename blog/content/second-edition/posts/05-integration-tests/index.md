@@ -371,7 +371,7 @@ Cargo supports hybrid projects that are both a library and a binary. We only nee
 ```rust
 // src/lib.rs
 
-#![no_std] // don't link the Rust standard library
+#![cfg_attr(not(test), no_std)] // don't link the Rust standard library
 
 extern crate bootloader;
 extern crate spin;
@@ -382,8 +382,6 @@ extern crate x86_64;
 
 #[cfg(test)]
 extern crate array_init;
-#[cfg(test)]
-extern crate std;
 
 // NEW: We need to add `pub` here to make them accessible from the outside
 pub mod vga_buffer;
@@ -400,7 +398,7 @@ pub unsafe fn exit_qemu() {
 ```rust
 // src/main.rs
 
-#![no_std] // don't link the Rust standard library
+#![cfg_attr(not(test), no_std)] // don't link the Rust standard library
 #![cfg_attr(not(test), no_main)] // disable all Rust-level entry points
 #![cfg_attr(test, allow(dead_code, unused_macros, unused_imports))]
 

@@ -1,4 +1,4 @@
-#![no_std] // don't link the Rust standard library
+#![cfg_attr(not(test), no_std)] // don't link the Rust standard library
 #![feature(abi_x86_interrupt)]
 
 extern crate bootloader;
@@ -11,8 +11,6 @@ extern crate x86_64;
 
 #[cfg(test)]
 extern crate array_init;
-#[cfg(test)]
-extern crate std;
 
 #[macro_use]
 pub mod vga_buffer;
